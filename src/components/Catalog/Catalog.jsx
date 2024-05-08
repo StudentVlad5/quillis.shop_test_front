@@ -193,7 +193,8 @@ export const Catalog = () => {
     (async function getData() {
       setIsLoading(true);
       try {
-        const { data } = await fetchData(`/category/${selectedLanguage}`);
+        // const { data } = await fetchData(`/category/${selectedLanguage}`);
+        const  {data}  = await fetchData(`/category`);
         if (!data) {
           return onFetchError(t('Whoops, something went wrong'));
         }
@@ -204,7 +205,7 @@ export const Catalog = () => {
         setIsLoading(false);
       }
     })();
-  }, [selectedLanguage]);
+  }, []);
 
   const [showSort, setShowSort] = useState(false);
   const toggleSort = () => {
@@ -367,6 +368,7 @@ export const Catalog = () => {
                     setFilters={setFilters}
                     setSearchParams={setSearchParams}
                     searchParams={searchParams}
+                    selectedLanguage={selectedLanguage}
                   />
                 </SC.FiltersWrapper>
               )}
@@ -408,6 +410,7 @@ export const Catalog = () => {
               setFilters={setFilters}
               setSearchParams={setSearchParams}
               searchParams={searchParams}
+              selectedLanguage={selectedLanguage}
             />
           </SC.FiltersContainer>
           <SC.GridWrapper>

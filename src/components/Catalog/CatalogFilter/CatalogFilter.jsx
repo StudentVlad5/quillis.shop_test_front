@@ -15,6 +15,7 @@ export const CatalogFilter = ({
   setFilters,
   searchParams,
   setSearchParams,
+  selectedLanguage,
 }) => {
   const { t } = useTranslation();
   const { selectedCurrency } = useContext(StatusContext);
@@ -134,7 +135,7 @@ export const CatalogFilter = ({
   return (
     <>
       <SC.Filters>
-        {filterState[0]?.level_1 && filterState[0]?.level_1.length > 0 && (
+        {filterState[0]?.level_1[selectedLanguage] && filterState[0]?.level_1[selectedLanguage].length > 0 && (
           <SC.Filter>
             <SC.FilterHeading
               className="active"
@@ -153,8 +154,8 @@ export const CatalogFilter = ({
               </SC.IconBtn>
             </SC.FilterHeading>
             <SC.FilterInnerList>
-              {filterState[0]?.level_1 &&
-                filterState[0]?.level_1.map((card, i) => {
+              {filterState[0]?.level_1[selectedLanguage] &&
+                filterState[0]?.level_1[selectedLanguage].map((card, i) => {
                   return (
                     <label
                       key={searchParams?.size > 0 ? i + searchParams : i}
@@ -178,7 +179,7 @@ export const CatalogFilter = ({
           </SC.Filter>
         )}
 
-        {filterState[0]?.level_2 && filterState[0]?.level_2.length > 0 && (
+        {filterState[0]?.level_2[selectedLanguage] && filterState[0]?.level_2[selectedLanguage].length > 0 && (
           <SC.Filter>
             <SC.FilterHeading
               className="active"
@@ -197,8 +198,8 @@ export const CatalogFilter = ({
               </SC.IconBtn>
             </SC.FilterHeading>
             <SC.FilterInnerList>
-              {filterState[0]?.level_2 &&
-                filterState[0]?.level_2.map((card, i) => {
+              {filterState[0]?.level_2[selectedLanguage] &&
+                filterState[0]?.level_2[selectedLanguage].map((card, i) => {
                   return (
                     <label
                       key={searchParams?.size > 0 ? i + searchParams : i}
@@ -222,8 +223,8 @@ export const CatalogFilter = ({
         )}
 
         {filters &&
-          filterState[0]?.level_2 &&
-          filterState[0]?.level_2.map((card, i) => {
+          filterState[0]?.level_2[selectedLanguage] &&
+          filterState[0]?.level_2[selectedLanguage].map((card, i) => {
             if (filters?.category.includes(card))
               return (
                 <div style={{ width: '100%' }} key={i}>
@@ -246,8 +247,8 @@ export const CatalogFilter = ({
                     </SC.FilterHeading>
                     <SC.FilterInnerList>
                       {filters?.category.includes(card) &&
-                        filterState[0]?.level_3 &&
-                        filterState[0]?.level_3[card].map((card, i) => {
+                        filterState[0]?.level_3[selectedLanguage] &&
+                        filterState[0]?.level_3[selectedLanguage][card].map((card, i) => {
                           return (
                             <label
                               key={
@@ -268,10 +269,11 @@ export const CatalogFilter = ({
                               <span>{card}</span>
                             </label>
                           );
-                        })}
+                        })
+                      }
                     </SC.FilterInnerList>
                   </SC.Filter>
-                  {filterState[0]?.level_4[card]?.length > 0 && (
+                  {filterState[0]?.level_4[selectedLanguage][card]?.length > 0 && (
                     <SC.Filter>
                       <SC.FilterHeading
                         data-key="sizes"
@@ -291,9 +293,9 @@ export const CatalogFilter = ({
                         </SC.IconBtn>
                       </SC.FilterHeading>
                       <SC.FilterInnerList>
-                        {filterState[0]?.level_4 &&
-                          filterState[0]?.level_4[card]?.length > 0 &&
-                          filterState[0]?.level_4[card].map((card, i) => {
+                        {filterState[0]?.level_4[selectedLanguage] &&
+                          filterState[0]?.level_4[selectedLanguage][card]?.length > 0 &&
+                          filterState[0]?.level_4[selectedLanguage][card].map((card, i) => {
                             return (
                               <label
                                 key={
