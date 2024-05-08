@@ -46,7 +46,7 @@ export const Catalog = () => {
         page: page,
         perPage: perPage,
         currency: selectedCurrency,
-      });
+        selectedLanguage: selectedLanguage });
 
   const [selectedFilter, setSelectedFilter] = useState([]);
   const [filters, setFilters] = useState(initialState);
@@ -145,6 +145,9 @@ export const Catalog = () => {
     searchParams.get('currency')
       ? (param.currency = searchParams.get('currency'))
       : (param.currency = selectedCurrency);
+    searchParams.get('selectedLanguage')
+      ? (param.selectedLanguage = searchParams.get('selectedLanguage'))
+      : (param.selectedLanguage = selectedLanguage);
     searchParams.get('sort')
       ? (param.sort = searchParams.get('sort'))
       : (param.sort = '');
@@ -157,7 +160,7 @@ export const Catalog = () => {
       setIsLoading(true);
       try {
         const { data } = await fetchData(
-          `/shop/${selectedLanguage}?${searchParams}`,
+          `/shop?${searchParams}`,
         );
         if (!data) {
           return onFetchError(t('Whoops, something went wrong'));
@@ -315,6 +318,9 @@ export const Catalog = () => {
     }
     if (filters.sort !== '') {
       params.sort = sort;
+    }
+    if (filters.selectedLanguage !== '') {
+      params.selectedLanguage = selectedLanguage;
     }
     setSearchParams(params);
   };
