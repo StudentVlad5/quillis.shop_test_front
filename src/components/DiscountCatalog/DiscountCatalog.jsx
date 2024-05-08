@@ -45,6 +45,7 @@ export const DiscountCatalog = () => {
         page: page,
         perPage: perPage,
         currency: selectedCurrency,
+        selectedLanguage: selectedLanguage 
       });
 
   const [selectedFilter, setSelectedFilter] = useState([]);
@@ -144,6 +145,9 @@ export const DiscountCatalog = () => {
     searchParams.get('currency')
       ? (param.currency = searchParams.get('currency'))
       : (param.currency = selectedCurrency);
+    searchParams.get('selectedLanguage')
+      ? (param.selectedLanguage = searchParams.get('selectedLanguage'))
+      : (param.selectedLanguage = selectedLanguage);
     searchParams.get('sort')
       ? (param.sort = searchParams.get('sort'))
       : (param.sort = '');
@@ -156,7 +160,7 @@ export const DiscountCatalog = () => {
       setIsLoading(true);
       try {
         const { data } = await fetchData(
-          `/shop/${selectedLanguage}/discounts?${searchParams}`,
+          `/shop/discounts?${searchParams}`,
         );
         if (!data) {
           return onFetchError(t('Whoops, something went wrong'));
@@ -191,7 +195,7 @@ export const DiscountCatalog = () => {
     (async function getData() {
       setIsLoading(true);
       try {
-        const { data } = await fetchData(`/category/${selectedLanguage}`);
+        const { data } = await fetchData(`/category`);
         if (!data) {
           return onFetchError(t('Whoops, something went wrong'));
         }
@@ -312,6 +316,9 @@ export const DiscountCatalog = () => {
     if (filters.sort !== '') {
       params.sort = sort;
     }
+    if (filters.selectedLanguage !== '') {
+      params.selectedLanguage = selectedLanguage;
+    }
     setSearchParams(params);
   };
   console.log('searchParams', searchParams.size);
@@ -356,6 +363,7 @@ export const DiscountCatalog = () => {
                     setFilters={setFilters}
                     setSearchParams={setSearchParams}
                     searchParams={searchParams}
+                    selectedLanguage={selectedLanguage}
                   />
                 </SC.FiltersWrapper>
               )}
@@ -396,6 +404,7 @@ export const DiscountCatalog = () => {
               filters={filters}
               setFilters={setFilters}
               setSearchParams={setSearchParams}
+              selectedLanguage={selectedLanguage}
             />
           </SC.FiltersContainer>
           <SC.GridWrapper>
