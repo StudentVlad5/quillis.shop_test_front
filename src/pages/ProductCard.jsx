@@ -27,7 +27,7 @@ const ProductCardPage = ({ addToBasket }) => {
       setIsLoading(true);
       try {
         const { data } = await fetchData(
-          `/shop/${selectedLanguage}/byid/${routeParams.id}`,
+          `/shop/byid/${routeParams.id}`,
         );
         setProduct(data);
         if (!data) {
@@ -61,6 +61,7 @@ const ProductCardPage = ({ addToBasket }) => {
           item={product}
           addToBasket={addToBasket}
           selectedCurrency={selectedCurrency}
+          selectedLanguage={selectedLanguage}
         />
       )}
     </>
