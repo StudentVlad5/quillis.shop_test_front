@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { CatalogSort } from '../Catalog/CatalogSort/CatalogSort';
+// import { CatalogSort } from '../Catalog/CatalogSort/CatalogSort';
 import { CatalogFilter } from '../Catalog/CatalogFilter/CatalogFilter';
 import { Benefits } from '../Catalog/Benefits/Benefits';
 import { CatalogList } from '../Catalog/CatalogList/CatalogList';
@@ -207,20 +207,20 @@ export const ReadyStylesCatalog = () => {
     })();
   }, []);
 
-  const [showSort, setShowSort] = useState(false);
+  // const [showSort, setShowSort] = useState(false);
   const toggleSort = () => {
-    setShowSort(state => !state);
+    // setShowSort(state => !state);
     setShowFilter(false);
   };
 
   const [showFilter, setShowFilter] = useState(false);
   const toggleFilter = () => {
     setShowFilter(state => !state);
-    setShowSort(false);
+    // setShowSort(false);
   };
 
   const handleClick = () => {
-    setShowSort(false);
+    // setShowSort(false);
     setShowFilter(false);
   };
 
@@ -327,21 +327,6 @@ export const ReadyStylesCatalog = () => {
         <SC.CatalogTitleWrapper>
           <SC.HeadlineShop $primary>{t('Shop')}</SC.HeadlineShop>
           <SC.Heading>
-            <SC.HeadingBtnBox>
-              <SC.SortBox>
-                <SC.Accord onClick={toggleSort}>
-                  <span>{t('SORT BY')}</span>
-                  <SC.IconBtn
-                    type="button"
-                    aria-label="switch to open sort list"
-                    aria-expanded="false"
-                  >
-                    <Open />
-                  </SC.IconBtn>
-                </SC.Accord>
-                {showSort && <CatalogSort sort={sort} setSort={setSort} />}
-              </SC.SortBox>
-            </SC.HeadingBtnBox>
             <SC.FiltersBox>
               <SC.Accord onClick={toggleFilter}>
                 <span>{t('FILTER BY')}</span>

@@ -42,7 +42,7 @@ export const SearchResult = ({
       setIsLoading(true);
       try {
         const { data } = await fetchData(
-          `/shop/${selectedLanguage}?${searchParams}`,
+          `/shop?${searchParams}`,
         );
         setProducts(data.catalog);
         // setCategory(data.group);
@@ -95,13 +95,13 @@ export const SearchResult = ({
                     >
                       <SC.CardImageSearch
                         src={card.mainImage}
-                        alt={card.title}
+                        alt={selectedLanguage === "de" ? card.title_de : selectedLanguage === "en" ?  card.title_en : selectedLanguage === "ru" ?  card.title_ru : card.title_ua}
                         width="93"
                         height="150"
                         loading="lazy"
                       />
                       <SC.CardTitleSearch>
-                        <SC.CardNameSearch>{card.title}</SC.CardNameSearch>
+                        <SC.CardNameSearch>{selectedLanguage === "de" ? card.title_de : selectedLanguage === "en" ?  card.title_en : selectedLanguage === "ru" ?  card.title_ru : card.title_ua}</SC.CardNameSearch>
                         <SC.CardPricesSearch>
                           {card && (
                             <SC.CardDiscountSearch>
@@ -118,7 +118,7 @@ export const SearchResult = ({
                         </SC.CardPricesSearch>
                         <SC.CardSizeSearch>
                           <div>
-                            <span>{card?.sizes}</span>
+                            <span>{selectedLanguage === "de" ? card?.sizes_de : selectedLanguage === "en" ?  card?.sizes_en : selectedLanguage === "ru" ?  card?.sizes_ru : card?.sizes_ua}</span>
                           </div>
                         </SC.CardSizeSearch>
                       </SC.CardTitleSearch>
@@ -147,7 +147,7 @@ export const SearchResult = ({
                   return (
                     <li key={i} onClick={onClose}>
                       <NavLink to={`shop/byid/${card.article}`}>
-                        {card.title}
+                        {selectedLanguage === "de" ? card.title_de : selectedLanguage === "en" ?  card.title_en : selectedLanguage === "ru" ?  card.title_ru : card.title_ua}
                       </NavLink>
                     </li>
                   );
