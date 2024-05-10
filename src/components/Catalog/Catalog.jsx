@@ -423,7 +423,7 @@ export const Catalog = () => {
             {isLoading ? onLoading() : onLoaded()}
             {error && onFetchError(t('Whoops, something went wrong'))}
             {products.length > 0 && !error && (
-              <CatalogList products={products} />
+              <CatalogList products={products} selectedLanguage={selectedLanguage}/>
             )}
             <Pagination
               totalPage={totalPage}

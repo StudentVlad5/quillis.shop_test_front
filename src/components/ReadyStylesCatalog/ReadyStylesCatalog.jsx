@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 // import { CatalogSort } from '../Catalog/CatalogSort/CatalogSort';
-import { CatalogFilter } from '../Catalog/CatalogFilter/CatalogFilter';
+import { CatalogFilter } from './CatalogFilter';
 import { Benefits } from '../Catalog/Benefits/Benefits';
 import { CatalogList } from '../Catalog/CatalogList/CatalogList';
 import { Pagination } from 'utils/pagination';
@@ -23,9 +23,10 @@ export const ReadyStylesCatalog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filterState, setFilterState] = useState({});
   const [products, setProducts] = useState([]);
+  const [listOfFilteredProducts, setListOfFilteredProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [totalPage, setTotalPage] = useState(0);
+  // const [totalPage, setTotalPage] = useState(0);
   const [page, setPages] = useState(
     getFromStorage('page') ? getFromStorage('page') : 1,
   );
@@ -79,11 +80,9 @@ export const ReadyStylesCatalog = () => {
 
   const getActiveLabel = () => {
     handleActiveLabel('man_woman');
-    handleActiveLabel('category');
-    handleActiveLabel('product');
-    handleActiveLabel('sizes');
-    // handleActiveLabel('minPrice');
-    // handleActiveLabel('maxPrice');
+    // handleActiveLabel('category');
+    // handleActiveLabel('product');
+    // handleActiveLabel('sizes');
   };
 
   // =================================================>
@@ -155,7 +154,7 @@ export const ReadyStylesCatalog = () => {
   }, []);
 
   useEffect(() => {
-    setParams();
+    // setParams();
     async function getData() {
       setIsLoading(true);
       try {
@@ -166,11 +165,11 @@ export const ReadyStylesCatalog = () => {
           return onFetchError(t('Whoops, something went wrong'));
         }
         setProducts(data);
-        setTotalPage(Math.ceil(data.total / perPage));
-        if ((data.total + perPage) / (perPage * page) < 1) {
-          setPage(1);
-        }
-        getSelectedFilter();
+        // setTotalPage(Math.ceil(data.length / perPage));
+        // if ((data.length + perPage) / (perPage * page) < 1) {
+        //   setPage(1);
+        // }
+        // getSelectedFilter();
         getActiveLabel();
       } catch (error) {
         setError(error);
@@ -184,8 +183,8 @@ export const ReadyStylesCatalog = () => {
     getData();
   }, [
     t,
-    page,
-    perPage,
+    // page,
+    // perPage,
     // sort,
     searchParams,
   ]);
@@ -206,6 +205,28 @@ export const ReadyStylesCatalog = () => {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if(filters?.man_woman.length > 0 && products){
+      let arrayProduct = [];
+      filters?.man_woman.map(it=>products.map(item => 
+        {
+          if(
+        item.man_women_ua === it ||
+        item.man_women_ru === it ||
+        item.man_women_en === it ||
+        item.man_women_de === it
+      )
+      {
+      arrayProduct.push(item);
+      }}
+    ))
+      setListOfFilteredProducts(arrayProduct)
+    } 
+    else {
+      setListOfFilteredProducts(products)
+    }
+  }, [filters, products]);
 
   // const [showSort, setShowSort] = useState(false);
   const toggleSort = () => {
@@ -229,16 +250,15 @@ export const ReadyStylesCatalog = () => {
   //   removeItem('filters');
   // };
 
-  const getSelectedFilter = () => {
-    const LS = getFromStorage('filters');
-    setSelectedFilter([
-      ...LS.category,
-      ...LS.man_woman,
-      ...LS.product,
-      ...LS.sizes,
-    ]);
-    // console.log('selectedFilter', selectedFilter);
-  };
+  // const getSelectedFilter = () => {
+  //   const LS = getFromStorage('filters');
+  //   setSelectedFilter([
+  //     ...LS.category,
+  //     ...LS.man_woman,
+  //     ...LS.product,
+  //     ...LS.sizes,
+  //   ]);
+  // };
 
   const removeSelectedFilter = e => {
     const deletedFilter = e.currentTarget.dataset.key;
@@ -320,7 +340,7 @@ export const ReadyStylesCatalog = () => {
     }
     setSearchParams(params);
   };
-  console.log('searchParams', searchParams.size);
+
   return (
     <SC.CatalogContainer>
       <SC.CatalogSection>
@@ -395,13 +415,13 @@ export const ReadyStylesCatalog = () => {
             {isLoading ? onLoading() : onLoaded()}
             {error && onFetchError(t('Whoops, something went wrong'))}
             {products.length > 0 && !error && (
-              <CatalogList products={products} />
+              <CatalogList products={listOfFilteredProducts} />
             )}
-            <Pagination
+            {/* <Pagination
               totalPage={totalPage}
               changePage={setPage}
               page={page}
-            />
+            /> */}
             {products.length === 0 && !isLoading && !error && (
               <>
                 <Headline style={{ textAlign: 'center' }}>
