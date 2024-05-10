@@ -98,7 +98,7 @@ export const App = () => {
             />
             <Route path="gifts" element={<GiftsPage />} />
             <Route path="discounts" element={<DiscountsShop />} />
-            <Route path="novetly" element={<ReadyStyles />} />
+            <Route path="styles" element={<ReadyStyles />} />
             <Route path="confidential" element={<ConfidentialPolitics />} />
             <Route
               path="delivery_and_payments"
