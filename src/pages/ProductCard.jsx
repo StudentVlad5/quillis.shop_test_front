@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { SEO } from 'utils/SEO';
 import { fetchData } from '../services/APIservice';
 import { ProductCard } from '../components/ProductCard/ProductCard';
+import { StylesCard } from '../components/StylesCard/StylesCard';
 import { onLoading, onLoaded } from 'components/helpers/Loader/Loader';
 import { onFetchError } from 'components/helpers/Messages/NotifyMessages';
 import { cleanHeaderBottom } from 'redux/header_bottom/operation';
@@ -56,8 +57,16 @@ const ProductCardPage = ({ addToBasket }) => {
       />
       {isLoading ? onLoading() : onLoaded()}
       {error && onFetchError(t('Whoops, something went wrong'))}
-      {Object.keys(product).length > 0 && !error && (
+      {Object.keys(product).length > 0 && !error && !product[0]?.list_of_articles && (
         <ProductCard
+          item={product}
+          addToBasket={addToBasket}
+          selectedCurrency={selectedCurrency}
+          selectedLanguage={selectedLanguage}
+        />
+      )}
+        {Object.keys(product).length > 0 && !error && product[0]?.list_of_articles && (
+        <StylesCard
           item={product}
           addToBasket={addToBasket}
           selectedCurrency={selectedCurrency}

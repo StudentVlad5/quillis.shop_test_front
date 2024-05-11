@@ -243,5 +243,8 @@
   "Name too short (min 2)": "Имя слишком короткое (мин. 2)",
   "Require": "Обязательно",
   "Your passwords do not match": "Ваши пароли не совпадают",
-  "Ready styles": "Готовые стили"
+  "Ready styles": "Готовые стили",
+  "Model name": "Наименование изделия",
+  "Discription": "Описание",
+  "Choose your options...": "Выбрать свой размер..."
 }
