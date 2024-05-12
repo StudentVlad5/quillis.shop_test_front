@@ -11,6 +11,7 @@ import * as SC from './StylesCard.styled';
 import { fetchData } from '../../services/APIservice';
 import { ReactComponent as Car } from 'images/svg/shipping.svg';
 import { ReactComponent as Done } from 'images/svg/done.svg';
+import { ReactComponent as Open } from 'images/svg/open.svg';
 
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
@@ -34,6 +35,14 @@ export const StylesCard = ({ item, selectedCurrency, addToBasket, selectedLangua
   const routeParams = useParams();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const [listOfStyles, setListOfStyles] = useState([]);
+  const toggleIncludedDetails = (it) => {
+    
+    setShowIncludedDetails(state => !state);
+    const element = document.getElementById(it);
+    console.log("element", element)
+    element.classList.toggle("active");
+  };
+  const [showIncludedDetails, setShowIncludedDetails] = useState(false);
 
 useEffect(()=>{
   async function getData(it) {
@@ -139,7 +148,6 @@ useEffect(()=>{
     !isLoggedIn ? onInfo(t('You must be logged!')) : toggleFavorite(id);
   };
 
-  console.log("listOfStyles", listOfStyles)
   return (
     <SC.ProductCardContainer>
       <SC.ProductCardSection>
@@ -265,8 +273,40 @@ useEffect(()=>{
                   <ul key={it.article} style={{marginBottom:"20px"}}>
                     <li>{t('Model name')}: {title}</li>
                     <li>{t('Price')}: {selectNewPrice(selectedCurrency, it)} {selectCurrency(selectedCurrency)}</li>
-                    <li>{t('Discription')}: </li>
-                    <li dangerouslySetInnerHTML={{ __html: description }}/>
+                    <li>
+                    <SC.InfoSection>
+                      <SC.Accord>
+                        <SC.ProductSubTitle marginBottom="0">
+                          {t('Discription')}
+                        </SC.ProductSubTitle>
+                        <SC.IconBtn
+                          type="button"
+                          aria-label="switch to open description"
+                          aria-expanded="false"
+                          onClick={()=>toggleIncludedDetails(it.article)}
+                          >
+                        {showIncludedDetails ? (
+                          <Open style={{ transform: 'rotate(180deg)' }} />
+                        ) : (
+                          <Open />
+                        )}
+                      </SC.IconBtn>
+                    </SC.Accord>
+                  <SC.AccordCareList className='showIncludedDetails description' id={it.article}>
+                    <SC.AccordCareItem>
+                      {description ? (
+                        <span dangerouslySetInnerHTML={{ __html: description }}/>
+                      ) : (
+                        <span>
+                          {t(
+                            'Wow. Sorry, we missed the product description',
+                          )}
+                        </span>
+                      )}
+                    </SC.AccordCareItem>
+                  </SC.AccordCareList>
+            </SC.InfoSection>
+                    </li>
                     <li><img src={it.mainImage} alt={title}/></li>
                     <li style={{padding:"20px 0", fontWeight:"bold"}}><Link style={{textDecoration:"none"}} to={`/shop/byid/${it.article}`} target="_blank" rel="noopener noreferrer">{t('Choose your options...')}</Link></li>
                   </ul>

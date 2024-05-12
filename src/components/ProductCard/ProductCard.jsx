@@ -284,8 +284,8 @@ export const ProductCard = ({ item, selectedCurrency, addToBasket, selectedLangu
   const [slideImagesToShow, setSlideImagesToShow] = useState([]);
 
   // open details for the info section
-  const [showCareDetails, setCareShowDetails] = useState(false);
-  const toggleCareDetails = () => setCareShowDetails(state => !state);
+  // const [showCareDetails, setCareShowDetails] = useState(false);
+  // const toggleCareDetails = () => setCareShowDetails(state => !state);
   const [showIncludedDetails, setShowIncludedDetails] = useState(false);
   const toggleIncludedDetails = () => setShowIncludedDetails(state => !state);
 
