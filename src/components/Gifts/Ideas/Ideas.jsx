@@ -126,13 +126,13 @@ export const Ideas = () => {
             loading="lazy"
           />
           <SC.Link
-            to={`/shop`}
-            onClick={() => {
-              saveToStorage('filters', {
-                ...init,
-                // category: [homeProductLinks?.footwear[selectedLanguage]],
-              });
-            }}
+            to={`/styles`}
+            // onClick={() => {
+            //   saveToStorage('filters', {
+            //     ...init,
+            //     // category: [homeProductLinks?.footwear[selectedLanguage]],
+            //   });
+            // }}
           >
             {t("Ready styles")}
           </SC.Link>
