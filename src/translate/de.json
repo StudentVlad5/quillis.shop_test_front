@@ -244,8 +244,9 @@
   "Require": "Obligatorisch",
   "Your passwords do not match": "Ihre Passwörter stimmen nicht überein",
   "Ready styles": "Fertige Styles",
-  "Model name":"Modellname",
+  "Model name": "Modellname",
   "Discription": "Beschreibung",
   "Choose your options...": "Wählen Sie Ihre Größe...",
-  "Wow. Sorry, we missed the product description": "Leider haben wir die Produktbeschreibung übersehen"
+  "Wow. Sorry, we missed the product description": "Leider haben wir die Produktbeschreibung übersehen",
+  "Price for a ready set": "Preis für ein fertiges Set"
 }

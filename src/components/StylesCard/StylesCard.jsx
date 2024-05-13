@@ -17,7 +17,12 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { selectCurrency, selectNewPrice } from 'services/selectCurrency';
 
-export const StylesCard = ({ item, selectedCurrency, addToBasket, selectedLanguage }) => {
+export const StylesCard = ({
+  item,
+  selectedCurrency,
+  addToBasket,
+  selectedLanguage,
+}) => {
   const {
     title,
     article,
@@ -26,54 +31,50 @@ export const StylesCard = ({ item, selectedCurrency, addToBasket, selectedLangua
     man_women_en,
     man_women_de,
     mainImage,
-    images = "",    
+    images = '',
     list_of_articles,
-    status
+    status,
   } = item[0];
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const routeParams = useParams();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const [listOfStyles, setListOfStyles] = useState([]);
-  const toggleIncludedDetails = (it) => {
-    
+  const toggleIncludedDetails = it => {
     setShowIncludedDetails(state => !state);
     const element = document.getElementById(it);
-    console.log("element", element)
-    element.classList.toggle("active");
+    console.log('element', element);
+    element.classList.toggle('active');
   };
   const [showIncludedDetails, setShowIncludedDetails] = useState(false);
 
-useEffect(()=>{
-  async function getData(it) {
-    setIsLoading(true);
-    try {
-      const { data } = await fetchData(
-        `/shop/byid/${it}`,
-      );
-      setListOfStyles(prev => [...prev, ...data]);
-      if (!data) {
-        return onFetchError(t('Whoops, something went wrong'));
+  useEffect(() => {
+    async function getData(it) {
+      setIsLoading(true);
+      try {
+        const { data } = await fetchData(`/shop/byid/${it}`);
+        setListOfStyles(prev => [...prev, ...data]);
+        if (!data) {
+          return onFetchError(t('Whoops, something went wrong'));
+        }
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsLoading(false);
     }
-  }
-  list_of_articles.map(it =>  getData(it));
-
-},[])
+    list_of_articles.map(it => getData(it));
+  }, []);
 
   let man_women = man_women_ua;
 
-  if(selectedLanguage === "ru"){
+  if (selectedLanguage === 'ru') {
     man_women = man_women_ru;
   }
-  if(selectedLanguage === "en"){
+  if (selectedLanguage === 'en') {
     man_women = man_women_en;
   }
-  if(selectedLanguage === "de"){
+  if (selectedLanguage === 'de') {
     man_women = man_women_de;
   }
 
@@ -83,8 +84,6 @@ useEffect(()=>{
   const user = useSelector(getUser).favorites;
   let favorites;
   user ? (favorites = user.map(item => item)) : (favorites = []);
-
-
 
   useEffect(() => {
     let imageArray = [];
@@ -147,6 +146,12 @@ useEffect(()=>{
     }
     !isLoggedIn ? onInfo(t('You must be logged!')) : toggleFavorite(id);
   };
+
+  let setPrice = 0;
+
+  listOfStyles.forEach(style => {
+    setPrice += parseFloat(selectNewPrice(selectedCurrency, style));
+  });
 
   return (
     <SC.ProductCardContainer>
@@ -234,7 +239,7 @@ useEffect(()=>{
 
           <SC.ProductInfo>
             <div>
-              <SC.Heading>
+              <SC.StylesHeading>
                 <SC.Name> Ready Style</SC.Name>
                 <SC.BtnForFavorite onClick={handleFavoriteBtnClick(article)}>
                   {favorites.includes(article) ? (
@@ -249,74 +254,129 @@ useEffect(()=>{
                     flexDirection: 'column',
                     width: '100%',
                     justifyContent: 'space-between',
-                    padding:"20px"
+                    padding: '20px',
+                    // alignItems: 'center',
                   }}
                 >
-               {listOfStyles.map((it)=>{ 
-                  let title = it.title_ua;
-                  let description = it.description_ua;        
-                  if(selectedLanguage === "ru"){
-                    title = it.title_ru;
-                    description = it.description_ru;        
-                  }
-                  if(selectedLanguage === "en"){
-                    title = it.title_en;
-                    description = it.description_en;    
-                  }
-                  if(selectedLanguage === "de"){
-                    title = it.title_de;
-                    description = it.description_de;  
-                  }
-                
-                
-                return(
-                  <ul key={it.article} style={{marginBottom:"20px"}}>
-                    <li>{t('Model name')}: {title}</li>
-                    <li>{t('Price')}: {selectNewPrice(selectedCurrency, it)} {selectCurrency(selectedCurrency)}</li>
-                    <li>
-                    <SC.InfoSection>
-                      <SC.Accord>
-                        <SC.ProductSubTitle marginBottom="0">
-                          {t('Discription')}
-                        </SC.ProductSubTitle>
-                        <SC.IconBtn
-                          type="button"
-                          aria-label="switch to open description"
-                          aria-expanded="false"
-                          onClick={()=>toggleIncludedDetails(it.article)}
+                  <SC.StylesSetPriceBox >
+                    <SC.StylesSetPrice>
+                      {t("Price for a ready set")}: {setPrice.toFixed(2)} {selectCurrency(selectedCurrency)}
+                    </SC.StylesSetPrice>
+                  </SC.StylesSetPriceBox>
+
+                  {listOfStyles.map(it => {
+                    let title = it.title_ua;
+                    let description = it.description_ua;
+                    if (selectedLanguage === 'ru') {
+                      title = it.title_ru;
+                      description = it.description_ru;
+                    }
+                    if (selectedLanguage === 'en') {
+                      title = it.title_en;
+                      description = it.description_en;
+                    }
+                    if (selectedLanguage === 'de') {
+                      title = it.title_de;
+                      description = it.description_de;
+                    }
+
+                    return (
+                      <SC.StylesList
+                        key={it.article}
+                        style={{ marginBottom: '20px' }}
+                      >
+                        <li>
+                          <SC.StylesImg
+                            src={it.mainImage}
+                            alt={title}
+                          />
+                        </li>
+
+                        <SC.StylesList2>
+                          <li>
+                            {t('Model name')}: {title}
+                          </li>
+                          <li>
+                            {t('Price')}: {selectNewPrice(selectedCurrency, it)}{' '}
+                            {selectCurrency(selectedCurrency)}
+                          </li>
+
+                          <li>
+                            <SC.InfoSection>
+                              <SC.Accord>
+                                <SC.ProductSubTitle marginBottom="0">
+                                  {t('Discription')}
+                                </SC.ProductSubTitle>
+                                <SC.IconBtn
+                                  type="button"
+                                  aria-label="switch to open description"
+                                  aria-expanded="false"
+                                  onClick={() =>
+                                    toggleIncludedDetails(it.article)
+                                  }
+                                >
+                                  {showIncludedDetails ? (
+                                    <Open
+                                      style={{ transform: 'rotate(180deg)' }}
+                                    />
+                                  ) : (
+                                    <Open />
+                                  )}
+                                </SC.IconBtn>
+                              </SC.Accord>
+                              <SC.AccordCareList
+                                className="showIncludedDetails description"
+                                id={it.article}
+                              >
+                                <SC.StylesAccordCareItem>
+                                  {description ? (
+                                    <span
+                                      dangerouslySetInnerHTML={{
+                                        __html: description,
+                                      }}
+                                    />
+                                  ) : (
+                                    <span>
+                                      {t(
+                                        'Wow. Sorry, we missed the product description',
+                                      )}
+                                    </span>
+                                  )}
+                                </SC.StylesAccordCareItem>
+                              </SC.AccordCareList>
+                            </SC.InfoSection>
+                          </li>
+                          <li>
+                            <SC.StylesLink
+                              style={{ textDecoration: 'none' }}
+                              to={`/shop/byid/${it.article}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {t('Choose your options...')}
+                            </SC.StylesLink>
+                          </li>
+                        </SC.StylesList2>
+
+                        {/* <li>
+                          <img src={it.mainImage} alt={title} />
+                        </li>
+                        <li style={{ padding: '20px 0', fontWeight: 'bold' }}>
+                          <Link
+                            style={{ textDecoration: 'none' }}
+                            to={`/shop/byid/${it.article}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
                           >
-                        {showIncludedDetails ? (
-                          <Open style={{ transform: 'rotate(180deg)' }} />
-                        ) : (
-                          <Open />
-                        )}
-                      </SC.IconBtn>
-                    </SC.Accord>
-                  <SC.AccordCareList className='showIncludedDetails description' id={it.article}>
-                    <SC.AccordCareItem>
-                      {description ? (
-                        <span dangerouslySetInnerHTML={{ __html: description }}/>
-                      ) : (
-                        <span>
-                          {t(
-                            'Wow. Sorry, we missed the product description',
-                          )}
-                        </span>
-                      )}
-                    </SC.AccordCareItem>
-                  </SC.AccordCareList>
-            </SC.InfoSection>
-                    </li>
-                    <li><img src={it.mainImage} alt={title}/></li>
-                    <li style={{padding:"20px 0", fontWeight:"bold"}}><Link style={{textDecoration:"none"}} to={`/shop/byid/${it.article}`} target="_blank" rel="noopener noreferrer">{t('Choose your options...')}</Link></li>
-                  </ul>
-
-               )})
-              }
+                            {t('Choose your options...')}
+                          </Link>
+                        </li> */}
+                      </SC.StylesList>
+                    );
+                  })}
                 </div>
-              </SC.Heading>
+              </SC.StylesHeading>
             </div>
-
           </SC.ProductInfo>
         </SC.ProductContent>
       </SC.ProductCardSection>

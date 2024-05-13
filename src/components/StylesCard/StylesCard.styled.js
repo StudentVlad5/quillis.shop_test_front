@@ -583,11 +583,11 @@ const AccordCareItem = styled.li`
   align-items: center;
   gap: 20px;
 
-  width: 100%;
+  /* width: 100%; */
 
   & span {
-    width: calc(100% - 30px);
-
+    /* width: calc(100% - 30px); */
+    width: 183px;
     color: ${theme.colors.brown2};
     font-family: ${theme.fonts[1]}; //Nib Pro
     font-size: 10px;
@@ -676,7 +676,104 @@ const BtnForFavorite = styled.button`
   background: transparent;
 `;
 
+const StylesImg = styled.img`
+  width: 109px;
+  height: 100px;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    width: 110px;
+    height: 122px;
+  }
+`;
+
+const StylesList = styled.ul`
+  display: flex;
+  padding-bottom: 10px;
+  border-bottom: 1px solid ${theme.colors.brown4};
+`;
+
+const StylesList2 = styled.ul`
+  margin-left: 15px;
+`;
+
+const StylesLink = styled(Link)`
+  font-family: ${theme.fonts[1]};
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 138%;
+  color: ${theme.colors.brown4};
+  transition: ${theme.transition[1]};
+  &:hover,
+  &:focus {
+    font-weight: bold;
+    transition: ${theme.transition[1]};
+  }
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    font-size: 16px;
+  }
+`;
+
+const StylesAccordCareItem = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  /* width: 100%; */
+
+  & span {
+    /* width: calc(100% - 30px); */
+    width: 150px;
+    color: ${theme.colors.brown2};
+    font-family: ${theme.fonts[1]}; //Nib Pro
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 138%; /* 19.32px */
+
+    @media screen and (min-width: ${theme.breakpoints.tablet}) {
+      font-size: 14px;
+      width: 183px;
+    }
+
+    @media screen and (min-width: ${theme.breakpoints.desktop}) {
+      font-size: 14px;
+    }
+  }
+`;
+
+const StylesHeading = styled(Heading)`
+  border-bottom: none;
+`;
+
+const StylesSetPrice = styled.p`
+  color: ${theme.colors.brown4};
+  font-family: ${theme.fonts[1]};
+  font-size: 16px;
+  font-style: normal;
+  font-weight: bold;
+
+  @media screen and (min-width: ${theme.breakpoints.desktop}) {
+    font-size: 22px;
+  }
+`;
+
+const StylesSetPriceBox = styled.div`
+  margin-bottom: 20px;
+
+  border-bottom: 1px solid ${theme.colors.brown4};
+`;
+
 export {
+  StylesList,
+  StylesList2,
+  StylesLink,
+  StylesAccordCareItem,
+  StylesHeading,
+  StylesSetPrice,
+  StylesImg,
+  StylesSetPriceBox,
   ProductCardSection,
   ProductCardContainer,
   ProductNav,
